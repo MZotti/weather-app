@@ -1,5 +1,6 @@
 const ACTION_TYPES = {
 	TODAY_WEATHER: 'TODAY_WEATHER',
+	WEEK_WEATHER: 'WEEK_WEATHER',
 }
 
 const reducer = (state, action) => {
@@ -7,7 +8,13 @@ const reducer = (state, action) => {
 		case ACTION_TYPES.TODAY_WEATHER: {
 			return {
 				...state,
-				weather: action.data
+				todayWeather: action.data
+			}
+		}
+		case ACTION_TYPES.WEEK_WEATHER: {
+			return {
+				...state,
+				weekWeather: action.data
 			}
 		}
 		default: {

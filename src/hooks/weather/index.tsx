@@ -8,8 +8,8 @@ import {
 import { useInfiniteQuery, useQuery } from "react-query";
 import { ACTION_TYPES, reducer } from "./reducers";
 
-import { GET_TODAY_WEATHER } from "@services/weather";
-import dailyWeatherBuild from "@functions/dailyWeatherBuild";
+import {GET_TODAY_WEATHER, GET_WEEK_WEATHER} from "@services/weather";
+import {todayWeatherBuild, weekWeatherBuild} from "@functions/weatherDataBuild";
 
 interface Actions {
     type: string;
@@ -21,7 +21,8 @@ interface InitContextProps {
     dispatch: Dispatch<Actions>;
     lat: number,
     lon: number,
-    weather: any[]
+    todayWeather: any[],
+    weekWeather: any[]
 }
 
 interface Props {
@@ -30,8 +31,9 @@ interface Props {
 
 interface InitialState {
     lat: number,
-    lon: number
-    weather: any[]
+    lon: number,
+    todayWeather: any[],
+    weekWeather: any[]
 }
 
 const WeatherStateContext = createContext({} as InitContextProps);
@@ -40,7 +42,8 @@ const WeatherDispatchContext = createContext({} as InitContextProps);
 const initialState: InitialState = {
     lat: -30.03,
     lon: -51.23,
-    weather: []
+    todayWeather: [],
+    weekWeather: []
 }
 const WeatherProvider = ({ children }: any) => {
     const [state, dispatch] = useReducer(reducer, initialState);
@@ -77,12 +80,24 @@ const useTodayWeather = () => {
     const dispatch = useWeatherDispatch();
     const { lat, lon } = useWeather()
 
-    return useQuery("weather", () => GET_TODAY_WEATHER(lat, lon), {
+    return useQuery("todayWeather", () => GET_TODAY_WEATHER(lat, lon, new Date()), {
         onSuccess: (data) => {
-            const formatData = dailyWeatherBuild(data)
+            const formatData = todayWeatherBuild(data)
             dispatch({ type: ACTION_TYPES.TODAY_WEATHER, data: formatData });
         },
     });
 };
 
-export { WeatherProvider, useWeather, useTodayWeather };
+const useWeekWeather = () => {
+    const dispatch = useWeatherDispatch();
+    const { lat, lon } = useWeather()
+
+    return useQuery("weekWeather", () => GET_WEEK_WEATHER(lat, lon), {
+        onSuccess: (data) => {
+            const formatData = weekWeatherBuild(data)
+            dispatch({ type: ACTION_TYPES.WEEK_WEATHER, data: formatData });
+        },
+    });
+};
+
+export { WeatherProvider, useWeather, useTodayWeather, useWeekWeather };

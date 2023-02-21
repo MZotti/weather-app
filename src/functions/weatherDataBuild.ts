@@ -1,4 +1,14 @@
-const dailyWeatherBuild = (data) => {
+export const todayWeatherBuild = (data) => {
+    const values = []
+    data.time.map((el, x) => values[x] = {time: el})
+    data.weathercode.map((el, x) => values[x].weather = el)
+    data.temperature_2m.map((el, x) => values[x].temperature = el)
+    data.rain.map((el, x) => values[x].rain = el)
+
+    return values
+}
+
+export const weekWeatherBuild = (data) => {
     const values = []
     data.time.map((el, x) => values[x] = {date: el})
     data.weathercode.map((el, x) => values[x].weather = el)
@@ -9,5 +19,3 @@ const dailyWeatherBuild = (data) => {
 
     return values
 }
-
-export default dailyWeatherBuild
