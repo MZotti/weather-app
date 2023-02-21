@@ -1,5 +1,3 @@
-import {CloudFog, CloudLightning, CloudRain, CloudSnow, CloudSun, Snowflake, SunDim} from "phosphor-react-native";
-
 const weatherCodes = [
     {
         codes: [0],

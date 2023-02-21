@@ -10,7 +10,11 @@ const TodayWeather = () => {
     const { todayWeather } = useWeather()
     const { isLoading } = useTodayWeather()
 
-    const renderItem = ({item}) => {
+    const renderItem = ({item}): JSX.Element => {
+        console.log(typeof item)
+        const hour = item.time.slice(-5).replace('0', '');
+        console.log(hour)
+
         return (
             <HStack space={4} flexDirection="row" justifyContent="space-between">
                 <HStack space={2}>

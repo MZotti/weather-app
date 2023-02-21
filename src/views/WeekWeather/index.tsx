@@ -11,6 +11,7 @@ const WeekWeather = () => {
     const { isLoading } = useWeekWeather()
 
     const renderItem = ({item}) => {
+        console.log(typeof item)
         return (
             <HStack space={4} flexDirection="row" justifyContent="space-between">
                 <HStack space={2}>
