@@ -1,7 +1,7 @@
 import React from "react";
 
-import {Box, Center, ScrollView, Spinner, Text, View, VStack} from "native-base";
-import { Thermometer } from "phosphor-react-native";
+import {Center, Divider, FlatList, HStack, ScrollView, Spinner, Text} from "native-base";
+import {Clock, Drop, Thermometer} from "phosphor-react-native";
 
 import {useWeather, useTodayWeather} from "@hooks/weather"
 import weatherCodes from "@enums/weatherCode";
@@ -10,27 +10,45 @@ const TodayWeather = () => {
     const { todayWeather } = useWeather()
     const { isLoading } = useTodayWeather()
 
+    const renderItem = ({item}) => {
+        return (
+            <HStack space={4} flexDirection="row" justifyContent="space-between">
+                <HStack space={2}>
+                    <Clock size={32} />
+                    <Text fontSize={20}>{item.time.slice(-5)}</Text>
+                </HStack>
+                <HStack space={2}>
+                    {weatherCodes.find(we => we.codes.includes(item.weather))?.title}
+                </HStack>
+                <HStack space={2}>
+                    <Thermometer size={32} />
+                    <Text fontSize={20}>{item.temperature}</Text>
+                </HStack>
+                <HStack space={2} flexDirection="row" justifyContent="flex-end" alignItems="flex-end">
+                    <Drop size={32} />
+                    <Text fontSize={20}>{item.rain}</Text>
+                </HStack>
+            </HStack>
+        )
+    }
+
     return (
         <ScrollView>
-            <View style={{flex: 1}}>
+            <Center w="100%" py={4} style={{flex: 1}}>
                 {
                     isLoading
-                        ? <Spinner />
-                        : <VStack flex={1} space={4}>
-                            {
-                                todayWeather?.map(el => (
-                                    <Center key={el.time}>
-                                        <Text color="red">{el.time}</Text>
-                                        <Text>{weatherCodes.find(we => we.codes.includes(el.weather))?.icon}</Text>
-                                        <Text><Thermometer size={16} /> Min {el.temp}</Text>
-                                        <Text>{el.rain}</Text>
-                                    </Center>
-                                ))
-                            }
-                        </VStack>
+                        ? <Spinner size="lg" color="cyan.500" />
+                        :
+                        <FlatList
+                            data={todayWeather}
+                            renderItem={renderItem}
+                            keyExtractor={item => item.time}
+                            ItemSeparatorComponent={<Divider my={4} />}
+                        />
                 }
-            </View>
-        </ScrollView>);
+            </Center>
+        </ScrollView>
+    );
 };
 
 export default TodayWeather;

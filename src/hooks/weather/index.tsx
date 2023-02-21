@@ -10,6 +10,7 @@ import { ACTION_TYPES, reducer } from "./reducers";
 
 import {GET_TODAY_WEATHER, GET_WEEK_WEATHER} from "@services/weather";
 import {todayWeatherBuild, weekWeatherBuild} from "@functions/weatherDataBuild";
+import dateFormat from "@functions/dateFormat";
 
 interface Actions {
     type: string;
@@ -79,8 +80,9 @@ const useWeather = () => {
 const useTodayWeather = () => {
     const dispatch = useWeatherDispatch();
     const { lat, lon } = useWeather()
+    const today = dateFormat(new Date(), 'y-MM-d');
 
-    return useQuery("todayWeather", () => GET_TODAY_WEATHER(lat, lon, new Date()), {
+    return useQuery("todayWeather", () => GET_TODAY_WEATHER(lat, lon, today), {
         onSuccess: (data) => {
             const formatData = todayWeatherBuild(data)
             dispatch({ type: ACTION_TYPES.TODAY_WEATHER, data: formatData });

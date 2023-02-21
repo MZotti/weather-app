@@ -1,7 +1,7 @@
 import React from "react";
 
-import {Box, Center, ScrollView, Spinner, Text, View, VStack} from "native-base";
-import { Thermometer } from "phosphor-react-native";
+import {Box, Center, Divider, FlatList, HStack, ScrollView, Spinner, Text, View, VStack} from "native-base";
+import {Clock, Drop, Thermometer} from "phosphor-react-native";
 
 import {useWeather, useWeekWeather} from "@hooks/weather"
 import weatherCodes from "@enums/weatherCode";
@@ -10,28 +10,48 @@ const WeekWeather = () => {
     const { weekWeather } = useWeather()
     const { isLoading } = useWeekWeather()
 
+    const renderItem = ({item}) => {
+        return (
+            <HStack space={4} flexDirection="row" justifyContent="space-between">
+                <HStack space={2}>
+                    <Text fontSize={20}>{item.date}</Text>
+                </HStack>
+                <HStack space={2}>
+                    {weatherCodes.find(we => we.codes.includes(item.weather))?.title}
+                </HStack>
+                <HStack space={2}>
+                    <Thermometer size={32} />
+                    <Text fontSize={20}>{item.minTemp}</Text>
+                </HStack>
+                <HStack space={2}>
+                    <Thermometer size={32} />
+                    <Text fontSize={20}>{item.maxTemp}</Text>
+                </HStack>
+                <HStack space={2}>
+                    <Text fontSize={20}>{item.sunrise}</Text>
+                </HStack>
+                <HStack space={2}>
+                    <Text fontSize={20}>{item.sunset}</Text>
+                </HStack>
+            </HStack>
+        )
+    }
+
     return (
         <ScrollView>
-            <View style={{flex: 1}}>
+            <Center style={{flex: 1}}>
                 {
                     isLoading
-                        ? <Spinner />
-                        : <VStack flex={1} space={4}>
-                            {
-                                weekWeather?.map(el => (
-                                    <Center key={el.date}>
-                                        <Text color="red">{el.date}</Text>
-                                        <Text>{weatherCodes.find(we => we.codes.includes(el.weather))?.icon}</Text>
-                                        <Text><Thermometer size={16} /> Min {el.minTemp}</Text>
-                                        <Text><Thermometer size={16} /> Max {el.maxTemp}</Text>
-                                        <Text>{el.sunrise}</Text>
-                                        <Text>{el.sunset}</Text>
-                                    </Center>
-                                ))
-                            }
-                        </VStack>
+                        ? <Spinner size="lg" color="cyan.500" />
+                        :
+                        <FlatList
+                            data={weekWeather}
+                            renderItem={renderItem}
+                            keyExtractor={item => item.date}
+                            ItemSeparatorComponent={<Divider my={4} />}
+                        />
                 }
-            </View>
+            </Center>
         </ScrollView>);
 };
 
