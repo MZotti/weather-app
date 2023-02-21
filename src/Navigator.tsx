@@ -21,12 +21,12 @@ export default function Navigator() {
 
                     if (route.name === 'Today') {
                         icon = focused
-                            ? <Clock size={24} color={"#38bdf8"} />
-                            : <Clock size={24} color={"#57534e"} />;
+                            ? <Clock size={24} color={"#38bdf8"} weight="duotone" />
+                            : <Clock size={24} color={"#57534e"} weight="duotone" />;
                     } else if (route.name === 'Week') {
                         icon = focused
-                            ? <CalendarBlank size={24} color={"#38bdf8"} />
-                            : <CalendarBlank size={24} color={"#57534e"} />;
+                            ? <CalendarBlank size={24} color={"#38bdf8"} weight="duotone" />
+                            : <CalendarBlank size={24} color={"#57534e"} weight="duotone" />;
                     }
 
                     return icon;

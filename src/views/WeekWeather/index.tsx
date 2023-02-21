@@ -5,20 +5,37 @@ import {Clock, Drop, Thermometer} from "phosphor-react-native";
 
 import {useWeather, useWeekWeather} from "@hooks/weather"
 import weatherCodes from "@enums/weatherCode";
+import weatherIcon from "@functions/weatherIcon";
+
+interface renderProps {
+    index: number,
+    item: weatherItem,
+    separators: any
+}
+
+interface weatherItem {
+    date: string,
+    weather: number,
+    minTemp: number,
+    maxTemp: number,
+    sunrise: string,
+    sunset: string,
+}
 
 const WeekWeather = () => {
     const { weekWeather } = useWeather()
     const { isLoading } = useWeekWeather()
 
-    const renderItem = ({item}) => {
-        console.log(typeof item)
+    const renderItem = ({item}: renderProps) => {
+        const weatherLabel = weatherCodes.find(we => we.codes.includes(item.weather))?.label
+
         return (
             <HStack space={4} flexDirection="row" justifyContent="space-between">
                 <HStack space={2}>
                     <Text fontSize={20}>{item.date}</Text>
                 </HStack>
                 <HStack space={2}>
-                    {weatherCodes.find(we => we.codes.includes(item.weather))?.title}
+                    { weatherIcon(12, weatherLabel, 32) }
                 </HStack>
                 <HStack space={2}>
                     <Thermometer size={32} />

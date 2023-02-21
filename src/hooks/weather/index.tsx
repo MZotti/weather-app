@@ -41,8 +41,8 @@ const WeatherStateContext = createContext({} as InitContextProps);
 const WeatherDispatchContext = createContext({} as InitContextProps);
 
 const initialState: InitialState = {
-    lat: -30.03,
-    lon: -51.23,
+    lat: -28.97,
+    lon: -52.04,
     todayWeather: [],
     weekWeather: []
 }
