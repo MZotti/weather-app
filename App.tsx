@@ -1,6 +1,6 @@
 import React from "react";
 import { SafeAreaView, StyleSheet } from "react-native";
-import { NativeBaseProvider, StatusBar } from "native-base";
+import { NativeBaseProvider, StatusBar, View } from "native-base";
 
 import WeatherQueryProvider from "@providers/weatherQueryProvider"
 
@@ -23,4 +23,4 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%'
     },
-  });
+});

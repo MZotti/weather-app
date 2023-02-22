@@ -1,9 +1,10 @@
 import React from "react";
+import { ScrollView } from 'react-native';
 
-import {Center, Divider, FlatList, HStack, ScrollView, Spinner, Text} from "native-base";
-import {Clock, Drop, Thermometer} from "phosphor-react-native";
+import { Box, Center, Divider, FlatList, HStack, Spinner, Text, VStack } from "native-base";
+import { Clock, Drop, Thermometer } from "phosphor-react-native";
 
-import {useWeather, useTodayWeather} from "@hooks/weather"
+import { useWeather, useTodayWeather } from "@hooks/weather"
 import weatherCodes from "@enums/weatherCode";
 import dateFormat from "@functions/dateFormat";
 import weatherIcon from "@functions/weatherIcon";
@@ -25,48 +26,71 @@ const TodayWeather = () => {
     const { todayWeather } = useWeather()
     const { isLoading } = useTodayWeather()
 
-    const renderItem = ({ item }: renderProps): JSX.Element => {
+    const now = dateFormat(new Date(), 'HH')
+    const currentWeather = todayWeather.find(we => we.time.slice(11, -3) == now)
+
+    const renderCurrentWeather = (weather: weatherItem) => {
+        if (!weather) return null
+
+        const hour = Number(weather.time.slice(-5).replace(':00', ''))
+
+        const weatherTitle = weatherCodes.find(we => we.codes.includes(weather.weather))?.title
+        const weatherLabel = weatherCodes.find(we => we.codes.includes(weather.weather))?.label
+
+        return (
+            <Center>
+                <VStack space={1}>
+                    {weatherIcon(hour, weatherLabel, 128)}
+                    <Center>
+                        <Text fontSize={22} color="gray.500" >{weatherTitle}</Text>
+                    </Center>
+                    <Center>
+                        <Text fontSize={32} color="gray.500" >{weather.temperature}º</Text>
+                    </Center>
+                </VStack>
+            </Center>
+        )
+
+    }
+
+    const renderItem = (item: weatherItem): JSX.Element => {
         const hour = Number(item.time.slice(-5).replace(':00', ''))
         const weatherLabel = weatherCodes.find(we => we.codes.includes(item.weather))?.label
 
+        const isNow = item.time.slice(11, -3) == now ? true : false
+
         return (
-            <HStack space={4} flexDirection="row" justifyContent="space-between">
-                <HStack space={2}>
-                    <Clock size={32} />
-                    <Text fontSize={20}>{item.time.slice(-5)}</Text>
-                </HStack>
-                <HStack space={2}>
-                    { weatherIcon(hour, weatherLabel, 32) }
-                </HStack>
-                <HStack space={2}>
-                    <Thermometer size={32} />
-                    <Text fontSize={20}>{item.temperature}</Text>
-                </HStack>
-                <HStack space={2} flexDirection="row" justifyContent="flex-end" alignItems="flex-end">
-                    <Drop size={32} />
-                    <Text fontSize={20}>{item.rain} mm</Text>
-                </HStack>
-            </HStack>
+            <Center h="100%" flexGrow={1} key={item.time} px="8" backgroundColor={isNow ? `gray.200` : 'transparent'}>
+                <VStack space={1}>
+                    {weatherIcon(hour, weatherLabel, 32)}
+                    <Center>
+                        <Text fontSize={16} color="gray.500" >{item.temperature}º</Text>
+                    </Center>
+                </VStack>
+            </Center>
         )
     }
 
     return (
-        <ScrollView>
-            <Center w="100%" py={4} style={{flex: 1}}>
+        <>
+            <Center w="100%" flexGrow={4} backgroundColor="gray.200">
                 {
-                    isLoading
-                        ? <Spinner size="lg" color="cyan.500" />
-                        :
-                        <FlatList
-                            data={todayWeather}
-                            renderItem={renderItem}
-                            keyExtractor={item => item.time}
-                            ItemSeparatorComponent={<Divider my={4} />}
-                        />
+                    renderCurrentWeather(currentWeather)
                 }
             </Center>
-        </ScrollView>
-    );
+            <Center w="100%" flexGrow={1} maxHeight="40">
+                <ScrollView h="100%" horizontal={true}>
+                    <HStack h="100%" space={5} justifyContent="center" alignItems="center">
+                        {
+                            todayWeather.map(we => (
+                                renderItem(we)
+                            ))
+                        }
+                    </HStack>
+                </ScrollView>
+            </Center>
+        </>
+    )
 };
 
 export default TodayWeather;
