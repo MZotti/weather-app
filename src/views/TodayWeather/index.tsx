@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView } from 'react-native';
+import { ScrollView } from "react-native";
 
 import { Box, Center, Divider, FlatList, HStack, Spinner, Text, VStack } from "native-base";
 import { Clock, Drop, Thermometer } from "phosphor-react-native";
@@ -33,7 +33,6 @@ const TodayWeather = () => {
         if (!weather) return null
 
         const hour = Number(weather.time.slice(-5).replace(':00', ''))
-
         const weatherTitle = weatherCodes.find(we => we.codes.includes(weather.weather))?.title
         const weatherLabel = weatherCodes.find(we => we.codes.includes(weather.weather))?.label
 
@@ -56,13 +55,17 @@ const TodayWeather = () => {
     const renderItem = (item: weatherItem): JSX.Element => {
         const hour = Number(item.time.slice(-5).replace(':00', ''))
         const weatherLabel = weatherCodes.find(we => we.codes.includes(item.weather))?.label
-
         const isNow = item.time.slice(11, -3) == now ? true : false
 
         return (
             <Center h="100%" flexGrow={1} key={item.time} px="8" backgroundColor={isNow ? `gray.200` : 'transparent'}>
                 <VStack space={1}>
-                    {weatherIcon(hour, weatherLabel, 32)}
+                    <Center>
+                        <Text fontSize={16} color="gray.500" >{item.time.slice(-5)}</Text>
+                    </Center>
+                    <Center>
+                        {weatherIcon(hour, weatherLabel, 32)}
+                    </Center>
                     <Center>
                         <Text fontSize={16} color="gray.500" >{item.temperature}º</Text>
                     </Center>
