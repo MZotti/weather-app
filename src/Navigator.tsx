@@ -1,12 +1,11 @@
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { HStack, IconButton, useColorMode } from "native-base";
 
 import TodayWeather from '@views/TodayWeather'
 import WeekWeather from '@views/WeekWeather'
 import { CalendarBlank, Clock, Moon, Sun } from "phosphor-react-native";
-import { Alert } from "react-native";
-import { HStack, IconButton, useColorMode } from "native-base";
 
 const Tab = createBottomTabNavigator();
 

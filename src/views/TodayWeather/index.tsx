@@ -1,8 +1,7 @@
 import React from "react";
 import { ScrollView } from "react-native";
 
-import { Box, Center, Divider, FlatList, HStack, Spinner, Text, useColorMode, useColorModeValue, VStack } from "native-base";
-import { Clock, Drop, Thermometer } from "phosphor-react-native";
+import { Center, HStack, Spinner, Text, useColorModeValue, VStack } from "native-base";
 
 import { useWeather, useTodayWeather } from "@hooks/weather"
 import weatherCodes from "@enums/weatherCode";
@@ -23,9 +22,9 @@ interface weatherItem {
 }
 
 const TodayWeather = () => {
-    const { todayWeather } = useWeather()
     const { isLoading } = useTodayWeather()
-    
+    const { todayWeather } = useWeather()
+
     const currentWeatherBackgroundColor = useColorModeValue('#e7e5e4', '#64748b');
     const sliderBackgroundColor = useColorModeValue('#d6d3d1', '#334155');
     const fontAndIconColor = useColorModeValue('#71717a', '#f1f5f9');
@@ -61,7 +60,7 @@ const TodayWeather = () => {
         const weatherLabel = weatherCodes.find(we => we.codes.includes(item.weather))?.label
         const isNow = item.time.slice(11, -3) == now ? true : false
 
-        const isNowBackgroundColor = useColorModeValue('#a8a29e', '#1e293b');
+        const isNowBackgroundColor = useColorModeValue('#e7e5e4', '#1e293b');
 
         return (
             <Center h="100%" flexGrow={1} key={item.time} px="8" backgroundColor={isNow ? isNowBackgroundColor : 'transparent'}>
@@ -82,22 +81,31 @@ const TodayWeather = () => {
 
     return (
         <>
-            <Center w="100%" flexGrow={4} backgroundColor={currentWeatherBackgroundColor}>
-                {
-                    renderCurrentWeather(currentWeather)
-                }
-            </Center>
-            <Center w="100%" flexGrow={1} maxHeight="40" backgroundColor={sliderBackgroundColor}>
-                <ScrollView horizontal={true}>
-                    <HStack space={5} justifyContent="center" alignItems="center">
-                        {
-                            todayWeather.map(we => (
-                                renderItem(we)
-                            ))
-                        }
-                    </HStack>
-                </ScrollView>
-            </Center>
+            {
+                isLoading ?
+                    <Center w="100%" flexGrow={4} backgroundColor={currentWeatherBackgroundColor}>
+                        <Spinner size="lg" color="coolGray.300" />
+                    </Center>
+                    :
+                    <>
+                        <Center w="100%" flexGrow={4} backgroundColor={currentWeatherBackgroundColor}>
+                            {
+                                renderCurrentWeather(currentWeather)
+                            }
+                        </Center>
+                        <Center w="100%" flexGrow={1} maxHeight="40" backgroundColor={sliderBackgroundColor}>
+                            <ScrollView horizontal={true}>
+                                <HStack space={5} justifyContent="center" alignItems="center">
+                                    {
+                                        todayWeather.map(we => (
+                                            renderItem(we)
+                                        ))
+                                    }
+                                </HStack>
+                            </ScrollView>
+                        </Center>
+                    </>
+            }
         </>
     )
 };
