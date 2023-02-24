@@ -1,10 +1,11 @@
-import React from "react";
+import React, {useState} from "react";
 import { SafeAreaView, StyleSheet } from "react-native";
 import { NativeBaseProvider, StatusBar, StorageManager, ColorMode  } from "native-base";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import WeatherQueryProvider from "@providers/weatherQueryProvider"
 
+import SplashScreen from "@views/SplashScreen";
 import Navigator from "./src/Navigator";
 
 const colorModeManager: StorageManager = {
@@ -26,13 +27,19 @@ const colorModeManager: StorageManager = {
 };
 
 export default function App() {
+    const [appLoaded, setAppLoaded] = useState(false)
+
     return (
         <NativeBaseProvider colorModeManager={colorModeManager}>
             <StatusBar />
             <SafeAreaView style={styles.container}>
-                <WeatherQueryProvider>
-                    <Navigator />
-                </WeatherQueryProvider>
+                {
+                    !appLoaded
+                        ? <SplashScreen setAppLoaded={setAppLoaded} />
+                        : <WeatherQueryProvider>
+                            <Navigator />
+                        </WeatherQueryProvider>
+                }
             </SafeAreaView>
         </NativeBaseProvider>
     );

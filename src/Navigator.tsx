@@ -6,6 +6,7 @@ import { HStack, IconButton, useColorMode } from "native-base";
 import TodayWeather from '@views/TodayWeather'
 import WeekWeather from '@views/WeekWeather'
 import { CalendarBlank, Clock, Moon, Sun } from "phosphor-react-native";
+import SplashScreen from "@views/SplashScreen";
 
 const Tab = createBottomTabNavigator();
 
