@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+      "baseUrl": "./src",
+      "paths": {
+          "@assets/*": ["assets/*"],
+          "@components/*": ["components/*"],
+          "@enums/*": ["enums/*"],
+          "@functions/*": ["functions/*"],
+          "@hooks/*": ["hooks/*"],
+          "@providers/*": ["providers/*"],
+          "@services/*": ["services/*"],
+          "@views/*": ["views/*"]
+      },
+        "allowJs": true,
+        "esModuleInterop": true,
+        "jsx": "react-native",
+        "lib": ["DOM", "ESNext"],
+        "moduleResolution": "node",
+        "noEmit": true,
+        "resolveJsonModule": true,
+        "skipLibCheck": true,
+        "target": "ESNext",
+        "strict": true
+    },
+    "extends": "expo/tsconfig.base"
+}
