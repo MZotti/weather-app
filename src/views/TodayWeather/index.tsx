@@ -21,24 +21,6 @@ interface weatherItem {
     rain: number
 }
 
-const Fade = ({duration = 0, children}: any) => (
-    <PresenceTransition
-        visible={true}
-        initial={{
-            opacity: 0,
-            scale: 0.8
-        }}
-        animate={{
-            opacity: 1,
-            scale: 1,
-            transition: {
-                duration: 200 + (duration * 260)
-            }
-        }}>
-        {children}
-    </PresenceTransition>
-)
-
 const TodayWeather = () => {
     const {isLoading} = useTodayWeather()
     const {todayWeather} = useWeather()
@@ -49,6 +31,24 @@ const TodayWeather = () => {
 
     const now = dateFormat(new Date(), 'HH')
     const currentWeather = todayWeather.find(we => we.time.slice(11, -3) == now)
+
+    const Fade = ({duration = 0, children}: any) => (
+        <PresenceTransition
+            visible={!isLoading}
+            initial={{
+                opacity: 0,
+                scale: 0.8
+            }}
+            animate={{
+                opacity: 1,
+                scale: 1,
+                transition: {
+                    duration: 200 + (duration * 260)
+                }
+            }}>
+            {children}
+        </PresenceTransition>
+    )
 
     const renderCurrentWeather = (weather: weatherItem) => {
         if (!weather) return null
@@ -61,7 +61,7 @@ const TodayWeather = () => {
             <Fade>
                 <Center>
                     <VStack space={1}>
-                        {weatherIcon(hour, weatherLabel, 128, (Number(now) >= 4 && Number(now) <= 19) ? '#fcd34d' : '#9333ea')}
+                        {weatherIcon(hour, weatherLabel, 128, (Number(now) >= 4 && Number(now) <= 19) ? '#fcd34d' : '#c084fc')}
                         <Center>
                             <Text fontSize={22} color={fontAndIconColor}>{weatherTitle}</Text>
                         </Center>
@@ -83,9 +83,9 @@ const TodayWeather = () => {
         const isNowBackgroundColor = useColorModeValue('#e7e5e4', '#1e293b');
 
         return (
-            <Fade duration={index}>
-                <Center h="100%" flexGrow={1} key={item.time} px="8"
-                        backgroundColor={isNow ? isNowBackgroundColor : 'transparent'}>
+            <Center h="100%" flexGrow={1} px="8"
+                    backgroundColor={isNow ? isNowBackgroundColor : 'transparent'}>
+                <Fade duration={index} key={item.time}>
                     <VStack space={1}>
                         <Center>
                             <Text fontSize={16} color={fontAndIconColor}>{item.time.slice(-5)}</Text>
@@ -97,8 +97,8 @@ const TodayWeather = () => {
                             <Text fontSize={16} color={fontAndIconColor}>{item.temperature}º</Text>
                         </Center>
                     </VStack>
-                </Center>
-            </Fade>
+                </Fade>
+            </Center>
         )
     }
 
