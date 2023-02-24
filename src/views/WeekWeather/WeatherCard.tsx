@@ -94,9 +94,9 @@ const WeatherCard = ({item, index, controller}: Props) => {
                     >
                         <HStack justifyContent="center" alignItems="center" space={4}>
                             <Text fontSize={22} color={cardFontColor}>{date}</Text>
-                            {weatherIcon(12, weatherLabel, 42, "#FFF")}
+                            {weatherIcon(12, weatherLabel, 42, cardFontColor)}
                         </HStack>
-                        {!isOpen ? <CaretDown size={26} color="#FFF"/> : <CaretUp size={26} color="#FFF"/>}
+                        {!isOpen ? <CaretDown size={26} color={cardFontColor}/> : <CaretUp size={26} color={cardFontColor} />}
                     </Flex>
                     {
                         isOpen &&
