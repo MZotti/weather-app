@@ -1,11 +1,8 @@
 import React, {useState} from "react";
 
-import { Accordion, Box, Center, Divider, FlatList, Flex, HStack, ScrollView, Spinner, Text, useColorModeValue, VStack } from "native-base";
-import {CaretDown, Clock, Drop, Thermometer} from "phosphor-react-native";
+import { Center, ScrollView, Spinner, useColorModeValue, VStack } from "native-base";
 
 import { useWeather, useWeekWeather } from "@hooks/weather"
-import weatherCodes from "@enums/weatherCode";
-import weatherIcon from "@functions/weatherIcon";
 import WeatherCard from "@views/WeekWeather/WeatherCard";
 
 interface weatherItem {

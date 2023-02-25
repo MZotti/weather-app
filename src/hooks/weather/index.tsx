@@ -1,11 +1,10 @@
 import {
-    useState,
     createContext,
     useContext,
     useReducer,
     Dispatch,
 } from "react";
-import { useInfiniteQuery, useQuery } from "react-query";
+import { useQuery } from "react-query";
 import { ACTION_TYPES, reducer } from "./reducers";
 
 import {GET_TODAY_WEATHER, GET_WEEK_WEATHER} from "@services/weather";
