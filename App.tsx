@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import { SafeAreaView, StyleSheet } from "react-native";
-import { NativeBaseProvider, StatusBar, StorageManager, ColorMode  } from "native-base";
+import { NativeBaseProvider, StorageManager, ColorMode } from "native-base";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import WeatherQueryProvider from "@providers/weatherQueryProvider"
@@ -31,7 +31,6 @@ export default function App() {
 
     return (
         <NativeBaseProvider colorModeManager={colorModeManager}>
-            <StatusBar />
             <SafeAreaView style={styles.container}>
                 {
                     !appLoaded

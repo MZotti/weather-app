@@ -1,12 +1,11 @@
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { HStack, IconButton, useColorMode } from "native-base";
+import {HStack, IconButton, StatusBar, useColorMode} from "native-base";
+import { CalendarBlank, Clock, Moon, Sun } from "phosphor-react-native";
 
 import TodayWeather from '@views/TodayWeather'
 import WeekWeather from '@views/WeekWeather'
-import { CalendarBlank, Clock, Moon, Sun } from "phosphor-react-native";
-import SplashScreen from "@views/SplashScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -34,38 +33,41 @@ export default function Navigator() {
     }
 
     return (
-        <NavigationContainer>
-            <Tab.Navigator screenOptions={({ route }) => ({
-                tabBarIcon: ({ focused, color, size }) => {
-                    let icon;
-                    const iconColor = (colorMode == "light") ? '#1e293b' : '#f5f5f4'
+        <>
+            <StatusBar backgroundColor={(colorMode == "light") ? '#f5f5f4' : '#1e293b'}/>
+            <NavigationContainer>
+                <Tab.Navigator screenOptions={({ route }) => ({
+                    tabBarIcon: ({ focused, color, size }) => {
+                        let icon;
+                        const iconColor = (colorMode == "light") ? '#1e293b' : '#f5f5f4'
 
-                    if (route.name === 'Today') {
-                        icon = focused
-                            ? <Clock size={24} color={"#38bdf8"} weight="duotone" />
-                            : <Clock size={24} color={iconColor} weight="duotone" />;
-                    } else if (route.name === 'Week') {
-                        icon = focused
-                            ? <CalendarBlank size={24} color={"#38bdf8"} weight="duotone" />
-                            : <CalendarBlank size={24} color={iconColor} weight="duotone" />;
-                    }
+                        if (route.name === 'Today') {
+                            icon = focused
+                                ? <Clock size={24} color={"#38bdf8"} weight="duotone" />
+                                : <Clock size={24} color={iconColor} weight="duotone" />;
+                        } else if (route.name === 'Week') {
+                            icon = focused
+                                ? <CalendarBlank size={24} color={"#38bdf8"} weight="duotone" />
+                                : <CalendarBlank size={24} color={iconColor} weight="duotone" />;
+                        }
 
-                    return icon;
-                },
-                tabBarActiveTintColor: '#38bdf8',
-                tabBarInactiveTintColor: (colorMode == "light") ? '#1e293b' : '#f5f5f4',
-            })}>
-                <Tab.Screen
-                    options={{
-                        title: 'Hoje',
-                        ...menuStyle
-                    }} name="Today" component={TodayWeather} />
-                <Tab.Screen
-                    options={{
-                        title: 'Semana',
-                        ...menuStyle
-                    }} name="Week" component={WeekWeather} />
-            </Tab.Navigator>
-        </NavigationContainer>
+                        return icon;
+                    },
+                    tabBarActiveTintColor: '#38bdf8',
+                    tabBarInactiveTintColor: (colorMode == "light") ? '#1e293b' : '#f5f5f4',
+                })}>
+                    <Tab.Screen
+                        options={{
+                            title: 'Hoje',
+                            ...menuStyle
+                        }} name="Today" component={TodayWeather} />
+                    <Tab.Screen
+                        options={{
+                            title: 'Semana',
+                            ...menuStyle
+                        }} name="Week" component={WeekWeather} />
+                </Tab.Navigator>
+            </NavigationContainer>
+        </>
     );
 }
