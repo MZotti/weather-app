@@ -34,7 +34,7 @@ const TodayWeather = () => {
                             <ScrollView horizontal={true}>
                                 <HStack space={5} justifyContent="center" alignItems="center">
                                     {
-                                        todayWeather.map((we, x) => <Weather key={x} item={we} index={x} now={now}/>)
+                                        todayWeather.map((we, x) => <Weather key={x} item={we} index={x} now={now} />)
                                     }
                                 </HStack>
                             </ScrollView>

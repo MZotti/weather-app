@@ -41,7 +41,7 @@ const WeekWeather = () => {
                         <ScrollView w="100%">
                             <VStack space={2} w="100%" py={3} px={6}>
                                 {
-                                    weekWeather.map((we, x) => <WeatherCard item={we} index={x} controller={cardsController} />)
+                                    weekWeather.map((we, x) => <WeatherCard key={x} item={we} index={x} controller={cardsController} />)
                                 }
                             </VStack>
                         </ScrollView>
