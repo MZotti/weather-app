@@ -8,20 +8,20 @@ import weatherCodes from "@enums/weatherCode";
 
 interface Props {
     weather: weatherItem,
-    now: String,
+    now: string,
 }
 
 interface weatherItem {
-    time: String,
+    time: string,
     weather: number,
     temperature: number,
     rain: number
 }
 
 const CurrentWeather = ({weather, now}: Props) => {
-    const hour = Number(weather.time.slice(-5).replace(':00', ''))
-    const weatherTitle = weatherCodes.find(we => we.codes.includes(weather.weather))?.title
-    const weatherLabel = weatherCodes.find(we => we.codes.includes(weather.weather))?.label
+    const hour = Number(weather?.time.slice(-5).replace(':00', ''))
+    const weatherTitle = weatherCodes.find(we => we.codes.includes(weather?.weather))?.title
+    const weatherLabel = weatherCodes.find(we => we.codes.includes(weather?.weather))?.label
 
     const fontAndIconColor = useColorModeValue('#71717a', '#f1f5f9');
 

@@ -20,7 +20,7 @@ const colorModeManager: StorageManager = {
         try {
             await AsyncStorage.setItem('@color-mode', String(value));
         } catch (e) {
-            console.log(e);
+            console.error(e);
         }
     },
 };

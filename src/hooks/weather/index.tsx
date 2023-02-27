@@ -7,8 +7,8 @@ import {
 import { useQuery } from "react-query";
 import { ACTION_TYPES, reducer } from "./reducers";
 
-import {GET_TODAY_WEATHER, GET_WEEK_WEATHER} from "@services/weather";
-import {todayWeatherBuild, weekWeatherBuild} from "@functions/weatherDataBuild";
+import { GET_TODAY_WEATHER, GET_WEEK_WEATHER } from "@services/weather";
+import { todayWeatherBuild, weekWeatherBuild } from "@functions/weatherDataBuild";
 import dateFormat from "@functions/dateFormat";
 
 interface Actions {
@@ -17,8 +17,9 @@ interface Actions {
 }
 
 interface InitContextProps {
-    state: any;
-    dispatch: Dispatch<Actions>;
+    state: any,
+    dispatch: Dispatch<Actions>,
+    location: string,
     lat: number,
     lon: number,
     todayWeather: any[],
@@ -30,6 +31,7 @@ interface Props {
 }
 
 interface InitialState {
+    location: string,
     lat: number,
     lon: number,
     todayWeather: any[],
@@ -40,12 +42,14 @@ const WeatherStateContext = createContext({} as InitContextProps);
 const WeatherDispatchContext = createContext({} as InitContextProps);
 
 const initialState: InitialState = {
+    location: 'Porto Alegre',
     lat: -29.98,
     lon: -51.19,
     todayWeather: [],
     weekWeather: []
 }
-const WeatherProvider = ({ children }: any) => {
+
+const WeatherProvider = ({ children }: Props) => {
     const [state, dispatch] = useReducer(reducer, initialState);
     const value = { state, dispatch };
 
@@ -81,7 +85,7 @@ const useTodayWeather = () => {
     const { lat, lon } = useWeather()
     const today = dateFormat(new Date(), 'y-MM-d');
 
-    return useQuery("todayWeather", () => GET_TODAY_WEATHER(lat, lon, today), {
+    return useQuery(["todayWeather", lat, lon], () => GET_TODAY_WEATHER(lat, lon, today), {
         onSuccess: (data) => {
             const formatData = todayWeatherBuild(data)
             dispatch({ type: ACTION_TYPES.TODAY_WEATHER, data: formatData });
@@ -93,7 +97,7 @@ const useWeekWeather = () => {
     const dispatch = useWeatherDispatch();
     const { lat, lon } = useWeather()
 
-    return useQuery("weekWeather", () => GET_WEEK_WEATHER(lat, lon), {
+    return useQuery(["weekWeather", lat, lon], () => GET_WEEK_WEATHER(lat, lon), {
         onSuccess: (data) => {
             const formatData = weekWeatherBuild(data)
             dispatch({ type: ACTION_TYPES.WEEK_WEATHER, data: formatData });
@@ -101,4 +105,4 @@ const useWeekWeather = () => {
     });
 };
 
-export { WeatherProvider, useWeather, useTodayWeather, useWeekWeather };
+export { WeatherProvider, useWeatherDispatch, useWeather, useTodayWeather, useWeekWeather };

@@ -1,18 +1,9 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 
 import { Center, ScrollView, Spinner, useColorModeValue, VStack } from "native-base";
 
 import { useWeather, useWeekWeather } from "@hooks/weather"
 import WeatherCard from "@views/WeekWeather/WeatherCard";
-
-interface weatherItem {
-    date: string,
-    weather: number,
-    minTemp: number,
-    maxTemp: number,
-    sunrise: string,
-    sunset: string,
-}
 
 const WeekWeather = () => {
     const { isLoading } = useWeekWeather()

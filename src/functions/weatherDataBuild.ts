@@ -1,17 +1,17 @@
 interface todayWeather {
-    time: String[],
+    time: string[],
     weathercode: Number[],
     temperature_2m: Number[],
     rain: Number[],
 }
 
 interface weekWeather {
-    time: String[],
+    time: string[],
     weathercode: Number[],
     temperature_2m_max: Number[],
     temperature_2m_min: Number[],
-    sunrise: String[],
-    sunset: String[],
+    sunrise: string[],
+    sunset: string[],
 }
 
 export const todayWeatherBuild = (data: todayWeather) => {

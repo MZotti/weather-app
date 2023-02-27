@@ -2,15 +2,11 @@ import React, {useEffect, useState} from "react";
 
 import {
     Box,
-    Center,
-    Divider,
-    Fade,
     Flex,
     HStack,
     PresenceTransition,
     Pressable,
     Text,
-    useColorModeValue,
     VStack
 } from "native-base";
 import {CaretDown, CaretUp} from "phosphor-react-native";

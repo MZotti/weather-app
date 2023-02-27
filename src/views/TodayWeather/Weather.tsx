@@ -9,7 +9,7 @@ import weatherCodes from "@enums/weatherCode";
 interface Props {
     item: weatherItem,
     index: number,
-    now: String
+    now: string
 }
 
 interface weatherItem {

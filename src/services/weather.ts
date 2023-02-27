@@ -1,6 +1,6 @@
 import { API } from './api'
 
-const WEATHER_ROUTE = 'https://api.open-meteo.com/v1//forecast';
+const WEATHER_ROUTE = 'https://api.open-meteo.com/v1/forecast';
 
 const TODAY_QUERY = 'temperature_2m,rain,weathercode&timezone=America%2FSao_Paulo'
 const WEEK_QUERY = 'weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=America%2FSao_Paulo'

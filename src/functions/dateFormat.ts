@@ -1,7 +1,7 @@
 import {format as fnsFormat} from "date-fns"
 import ptBR from "date-fns/locale/pt-BR"
 
-const dateFormat = (value: Date, format = "dd/MM/yyyy"): String => {
+const dateFormat = (value: Date, format = "dd/MM/yyyy"): string => {
     try {
         if (!value) return String(value);
         return fnsFormat(new Date(value), format, {locale: ptBR});

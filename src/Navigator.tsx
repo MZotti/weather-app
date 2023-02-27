@@ -1,16 +1,33 @@
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import {HStack, IconButton, StatusBar, useColorMode} from "native-base";
+import { HStack, IconButton, StatusBar, useColorMode } from "native-base";
 import { CalendarBlank, Clock, Moon, Sun } from "phosphor-react-native";
 
+import { useEffect } from 'react'
 import TodayWeather from '@views/TodayWeather'
 import WeekWeather from '@views/WeekWeather'
+import { useWeatherDispatch } from "@hooks/weather";
+import LocationModal from "@components/LocationModal";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ACTION_TYPES } from "@hooks/weather/reducers";
 
 const Tab = createBottomTabNavigator();
 
 export default function Navigator() {
+    const dispatch = useWeatherDispatch()
     const { toggleColorMode, colorMode } = useColorMode();
+
+    useEffect(() => {
+        const loadLocation = async () => {
+            const data = await AsyncStorage.getItem('@location')
+            if (data) {
+                dispatch({ type: ACTION_TYPES.CHANGE_LOCATION, data: JSON.parse(data) })
+            }
+        }
+
+        loadLocation()
+    }, [])
 
     const menuStyle = {
         headerStyle: {
@@ -21,7 +38,8 @@ export default function Navigator() {
         },
         headerTintColor: colorMode == "light" ? '#71717a' : '#f1f5f9',
         headerRight: () => (
-            <HStack pr="4">
+            <HStack pr="4" space={4}>
+                <LocationModal />
                 <IconButton
                     variant={"solid"}
                     colorScheme={colorMode == "light" ? "purple" : "orange"}
@@ -34,7 +52,7 @@ export default function Navigator() {
 
     return (
         <>
-            <StatusBar backgroundColor={(colorMode == "light") ? '#f5f5f4' : '#1e293b'}/>
+            <StatusBar backgroundColor={(colorMode == "light") ? '#f5f5f4' : '#1e293b'} />
             <NavigationContainer>
                 <Tab.Navigator screenOptions={({ route }) => ({
                     tabBarIcon: ({ focused, color, size }) => {
