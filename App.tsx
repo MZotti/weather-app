@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import WeatherQueryProvider from "@providers/weatherQueryProvider"
 
 import Navigator from "./src/Navigator";
+import { LanguageProvider } from "@hooks/language";
 
 const colorModeManager: StorageManager = {
     get: async () => {
@@ -29,9 +30,11 @@ export default function App() {
     return (
         <NativeBaseProvider colorModeManager={colorModeManager}>
             <SafeAreaView style={styles.container}>
-                <WeatherQueryProvider>
-                    <Navigator />
-                </WeatherQueryProvider>
+                <LanguageProvider>
+                    <WeatherQueryProvider>
+                        <Navigator />
+                    </WeatherQueryProvider>
+                </LanguageProvider>
             </SafeAreaView>
         </NativeBaseProvider>
     );

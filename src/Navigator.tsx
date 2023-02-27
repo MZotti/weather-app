@@ -1,32 +1,44 @@
-import * as React from "react";
+import { useEffect } from 'react'
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { HStack, IconButton, StatusBar, useColorMode } from "native-base";
-import { CalendarBlank, Clock, Moon, Sun } from "phosphor-react-native";
+import { CalendarBlank, Clock, GearSix, Moon, Sun } from "phosphor-react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { useEffect } from 'react'
+import { useLanguage, useLanguageDispatch } from '@hooks/language';
+import { ACTION_TYPES as LANGUAGE_TYPES } from "@hooks/language/reducers";
+import { useWeatherDispatch } from "@hooks/weather";
+import { ACTION_TYPES as WEATHER_TYPES } from "@hooks/weather/reducers";
 import TodayWeather from '@views/TodayWeather'
 import WeekWeather from '@views/WeekWeather'
-import { useWeatherDispatch } from "@hooks/weather";
+import Configuration from "@views/Configuration";
 import LocationModal from "@components/LocationModal";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ACTION_TYPES } from "@hooks/weather/reducers";
+import languages from '@enums/lang/languages';
 
 const Tab = createBottomTabNavigator();
 
 export default function Navigator() {
-    const dispatch = useWeatherDispatch()
+    const { language } = useLanguage()
+    const languageDispatch = useLanguageDispatch()
+    const weatherDispatch = useWeatherDispatch()
     const { toggleColorMode, colorMode } = useColorMode();
 
     useEffect(() => {
+        const loadLanguage = async () => {
+            const data = await AsyncStorage.getItem('@language')
+            if (data) {
+                languageDispatch({ type: LANGUAGE_TYPES.CHANGE_LANGUAGE, data: { language: data } })
+            }
+        }
         const loadLocation = async () => {
             const data = await AsyncStorage.getItem('@location')
             if (data) {
-                dispatch({ type: ACTION_TYPES.CHANGE_LOCATION, data: JSON.parse(data) })
+                weatherDispatch({ type: WEATHER_TYPES.CHANGE_LOCATION, data: JSON.parse(data) })
             }
         }
 
         loadLocation()
+        loadLanguage()
     }, [])
 
     const menuStyle = {
@@ -67,6 +79,10 @@ export default function Navigator() {
                             icon = focused
                                 ? <CalendarBlank size={24} color={"#38bdf8"} weight="duotone" />
                                 : <CalendarBlank size={24} color={iconColor} weight="duotone" />;
+                        } else if (route.name === 'Configuration') {
+                            icon = focused
+                                ? <GearSix size={24} color={"#38bdf8"} weight="duotone" />
+                                : <GearSix size={24} color={iconColor} weight="duotone" />;
                         }
 
                         return icon;
@@ -76,14 +92,19 @@ export default function Navigator() {
                 })}>
                     <Tab.Screen
                         options={{
-                            title: 'Hoje',
+                            title: languages.today[language],
                             ...menuStyle
                         }} name="Today" component={TodayWeather} />
                     <Tab.Screen
                         options={{
-                            title: 'Semana',
+                            title: languages.week[language],
                             ...menuStyle
                         }} name="Week" component={WeekWeather} />
+                    <Tab.Screen
+                        options={{
+                            title: languages.configurations[language],
+                            ...menuStyle
+                        }} name="Configuration" component={Configuration} />
                 </Tab.Navigator>
             </NavigationContainer>
         </>

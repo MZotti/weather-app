@@ -5,6 +5,7 @@ import {Center, Text, useColorModeValue, VStack} from "native-base";
 import FadeOpacity from "@components/FadeOpacity";
 import weatherIcon from "@functions/weatherIcon";
 import weatherCodes from "@enums/weatherCode";
+import { useLanguage } from "@hooks/language";
 
 interface Props {
     weather: weatherItem,
@@ -19,8 +20,10 @@ interface weatherItem {
 }
 
 const CurrentWeather = ({weather, now}: Props) => {
+    const { language } = useLanguage()
+
     const hour = Number(weather?.time.slice(-5).replace(':00', ''))
-    const weatherTitle = weatherCodes.find(we => we.codes.includes(weather?.weather))?.title
+    const weatherTitle = weatherCodes.find(we => we.codes.includes(weather?.weather))?.title[language]
     const weatherLabel = weatherCodes.find(we => we.codes.includes(weather?.weather))?.label
 
     const fontAndIconColor = useColorModeValue('#71717a', '#f1f5f9');

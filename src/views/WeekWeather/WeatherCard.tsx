@@ -14,6 +14,7 @@ import {CaretDown, CaretUp} from "phosphor-react-native";
 import weatherCodes from "@enums/weatherCode";
 import weatherIcon from "@functions/weatherIcon";
 import dateFormat from "@functions/dateFormat";
+import { useLanguage } from "@hooks/language";
 
 interface Props {
     item: weatherItem
@@ -31,11 +32,12 @@ interface weatherItem {
 }
 
 const WeatherCard = ({item, index, controller}: Props) => {
+    const { language } = useLanguage()
     const date = dateFormat(new Date(item.date.slice(0, 10)), 'dd/MM/Y')
     const now = dateFormat(new Date(), 'HH')
 
     const weatherLabel = weatherCodes.find(we => we.codes.includes(item.weather))?.label
-    const weatherTitle = weatherCodes.find(we => we.codes.includes(item.weather))?.title
+    const weatherTitle = weatherCodes.find(we => we.codes.includes(item.weather))?.title[language]
 
     const [isOpen, setIsOpen] = useState(false)
 

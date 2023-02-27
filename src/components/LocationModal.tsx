@@ -5,6 +5,8 @@ import { useWeather, useWeatherDispatch } from '@hooks/weather';
 import { ACTION_TYPES } from '@hooks/weather/reducers';
 import { MapPin } from 'phosphor-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useLanguage } from '@hooks/language';
+import languages from '@enums/lang/languages';
 
 interface Option {
     name: string,
@@ -15,6 +17,7 @@ interface Option {
 }
 
 const LocationModal = () => {
+    const { language } = useLanguage()
     const { location } = useWeather()
     const dispatch = useWeatherDispatch();
 
@@ -68,12 +71,12 @@ const LocationModal = () => {
             <Modal isOpen={isOpen} onClose={handleClose}>
                 <Modal.Content maxWidth="400px">
                     <Modal.CloseButton />
-                    <Modal.Header color={textColor}>Escolha sua localização</Modal.Header>
+                    <Modal.Header color={textColor}>{languages.choseLocationTitle[language]}</Modal.Header>
                     <Modal.Body>
                         <Box w="full" mb={options.length === 0 && !isLoading ? 0 : 4}>
                             <Input
                                 InputLeftElement={<Icon as={<MapPin size={20} color="#71717a" />} size={20} ml="2" color="gray.200" />}
-                                placeholder="Digite sua localização"
+                                placeholder={languages.choseLocationPlaceholder[language]}
                                 onChangeText={value => handleTextInput(value)} />
                         </Box>
                         <ScrollView maxH={80}>
@@ -131,7 +134,7 @@ const LocationModal = () => {
                     <Modal.Footer py={2}>
                         <Button.Group space={1}>
                             <Button variant="ghost" colorScheme="blueGray" onPress={handleClose}>
-                                Fechar
+                                {languages.close[language]}
                             </Button>
                         </Button.Group>
                     </Modal.Footer>

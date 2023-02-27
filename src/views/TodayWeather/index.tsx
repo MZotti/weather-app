@@ -9,8 +9,8 @@ import Weather from "@views/TodayWeather/Weather";
 import dateFormat from "@functions/dateFormat";
 
 const TodayWeather = () => {
-    const { isLoading } = useTodayWeather()
     const { todayWeather } = useWeather()
+    const { isLoading } = useTodayWeather()
 
     const now = dateFormat(new Date(), 'HH')
     const currentWeather = todayWeather?.find(we => we.time.slice(11, -3) == now)
