@@ -1,6 +1,6 @@
 import React from "react";
 
-import {Center, Text, useColorModeValue, VStack} from "native-base";
+import { Center, Text, useColorModeValue, VStack } from "native-base";
 
 import FadeOpacity from "@components/FadeOpacity";
 import weatherIcon from "@functions/weatherIcon";
@@ -19,7 +19,7 @@ interface weatherItem {
     rain: number
 }
 
-const CurrentWeather = ({weather, now}: Props) => {
+const CurrentWeather = ({ weather, now }: Props) => {
     const { language } = useLanguage()
 
     const hour = Number(weather?.time.slice(-5).replace(':00', ''))
@@ -37,7 +37,7 @@ const CurrentWeather = ({weather, now}: Props) => {
                         <Text fontSize={22} color={fontAndIconColor}>{weatherTitle}</Text>
                     </Center>
                     <Center>
-                        <Text fontSize={32} color={fontAndIconColor}>{weather.temperature}º</Text>
+                        <Text fontSize={32} color={fontAndIconColor}>{weather?.temperature}º</Text>
                     </Center>
                 </VStack>
             </Center>

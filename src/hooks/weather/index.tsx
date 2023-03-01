@@ -83,7 +83,7 @@ const useWeather = () => {
 const useTodayWeather = () => {
     const dispatch = useWeatherDispatch();
     const { lat, lon } = useWeather()
-    const today = dateFormat(new Date(), 'y-MM-d');
+    const today = dateFormat(new Date(), 'yyyy-MM-dd');
 
     return useQuery(["todayWeather", lat, lon], () => GET_TODAY_WEATHER(lat, lon, today), {
         onSuccess: (data) => {
